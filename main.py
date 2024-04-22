@@ -22,13 +22,14 @@ prompt = ChatPromptTemplate(
 
 tools = [run_query_tool]
 
-#create agent
+#create agent (~ a chain that knows how to use tools)
 agent = OpenAIFunctionsAgent(
     llm = chat,
     prompt = prompt,
     tools = tools
 )
 
+#create agent executor (~ while loop)
 agent_executor = AgentExecutor(
     agent = agent,
     verbose = True,
@@ -36,4 +37,5 @@ agent_executor = AgentExecutor(
 )
 
 
+#run agent executor
 agent_executor("How many users are in the database")
