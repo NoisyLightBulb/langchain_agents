@@ -1,0 +1,10 @@
+# environment variable
+# containts OpenAI API KEY
+.env
+\env
+
+#database
+\emb
+
+Pipfile
+Pipfile.lock
