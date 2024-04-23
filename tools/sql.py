@@ -8,8 +8,14 @@ conn = sqlite3.connect("db.sqlite")
 #query database
 def run_sqlite_query(query):
     c = conn.cursor()
-    c.execute(query)
-    return c.fetchall()
+
+    try:
+        c.execute(query)
+        return c.fetchall()
+    #catch errors while accessing sqlite database
+    except sqlite3.OperationalError as err:
+        return f"The following error occured: {str(err)}"
+
 
 #create tool
 run_query_tool = Tool.from_function(
