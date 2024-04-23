@@ -61,7 +61,7 @@ def describe_tables(table_names):
 
 
 class DescribeTablesArgsSchema(BaseModel):
-    table_names: List[str]
+    tables_names: List[str]
 
 #create tool
 describe_tables_tool = Tool.from_function(

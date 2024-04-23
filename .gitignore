@@ -6,6 +6,5 @@
 Pipfile
 Pipfile.lock
 
-
-orders_report.html
-top_products_report.html
+#ommit created report files
+*.html
