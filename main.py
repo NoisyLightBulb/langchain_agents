@@ -5,6 +5,7 @@ from langchain.agents import OpenAIFunctionsAgent, AgentExecutor
 from dotenv import load_dotenv
 
 from tools.sql import run_query_tool, list_tables, describe_tables_tool
+from tools.report import write_report_tool
 
 #load environment variables
 load_dotenv()
@@ -30,7 +31,7 @@ prompt = ChatPromptTemplate(
 )
 
 #list of tools
-tools = [run_query_tool, describe_tables_tool]
+tools = [run_query_tool, describe_tables_tool, write_report_tool]
 
 #create agent (~ a chain that knows how to use tools)
 agent = OpenAIFunctionsAgent(
@@ -49,4 +50,6 @@ agent_executor = AgentExecutor(
 
 #run agent executor
 # agent_executor("How many users are in the database")
-agent_executor("How many users have provided a shipping address?")
+agent_executor("How many orders are there? Write the result to an html report.")
+
+agent_executor("Repeat the exact same process for users.")
