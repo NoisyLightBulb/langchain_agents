@@ -1,10 +1,12 @@
 import sqlite3
+from pydantic.v1 import BaseModel
+from typing import List
 from langchain.tools import Tool
 
 #create connection to database
 conn = sqlite3.connect("db.sqlite")
 
-#returns the all table names
+#returns all table names
 def list_tables():
     c = conn.cursor()
     c.execute("SELECT name FROM sqlite_master WHERE type='table';")
@@ -28,11 +30,17 @@ def run_sqlite_query(query):
         return f"The following error occured: {str(err)}"
 
 
+
+class RunQueryArgsSchema(BaseModel):
+    query: str
+
+
 #create tool
 run_query_tool = Tool.from_function(
     name = "run_sqlite_query",
     description = "Run a sqlite query.",
-    func = run_sqlite_query
+    func = run_sqlite_query,
+    args_schema = RunQueryArgsSchema
 )
 
 
@@ -50,9 +58,16 @@ def describe_tables(table_names):
 
     return column_names
 
+
+
+class DescribeTablesArgsSchema(BaseModel):
+    table_names: List[str]
+
 #create tool
 describe_tables_tool = Tool.from_function(
     name = "describe_tables",
     description = "Given a list of table names, return the schema of those tables.",
-    func = describe_tables
+    func = describe_tables,
+    args_schema = DescribeTablesArgsSchema
+
 )
