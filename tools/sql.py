@@ -4,16 +4,16 @@ from langchain.tools import Tool
 #create connection to database
 conn = sqlite3.connect("db.sqlite")
 
-#returns the column names of a table
+#returns the all table names
 def list_tables():
     c = conn.cursor()
     c.execute("SELECT name FROM sqlite_master WHERE type='table';")
     rows = c.fetchall()
 
-    #reformat column names
-    column_names = "\n".join(row[0] for row in rows if row[0] is not None)
+    #reformat table names
+    table_names = "\n".join(row[0] for row in rows if row[0] is not None)
 
-    return column_names
+    return table_names
 
 
 #query database
@@ -34,3 +34,18 @@ run_query_tool = Tool.from_function(
     description = "Run a sqlite query.",
     func = run_sqlite_query
 )
+
+
+def describe_tables(table_names):
+    c = conn.cursor()
+
+    #reformat table names
+    tables = ', '.join("'" + table + "'" for table in table_names)
+
+    #get column names for each table
+    rows = c.execute(f"SELECT sql FROM sqlite_master WHERE type='table' and name IN ({tables});")
+
+    #reformat column names
+    column_names = '\n'.join(row[0] for row in rows if row[0] is not None)
+
+    return column_names
