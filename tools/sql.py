@@ -53,6 +53,6 @@ def describe_tables(table_names):
 #create tool
 describe_tables_tool = Tool.from_function(
     name = "describe_tables",
-    description = "Given a list of table names, return the schema of those tables."
+    description = "Given a list of table names, return the schema of those tables.",
     func = describe_tables
 )
