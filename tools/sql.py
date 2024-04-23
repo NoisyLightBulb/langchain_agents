@@ -49,3 +49,10 @@ def describe_tables(table_names):
     column_names = '\n'.join(row[0] for row in rows if row[0] is not None)
 
     return column_names
+
+#create tool
+describe_tables_tool = Tool.from_function(
+    name = "describe_tables",
+    description = "Given a list of table names, return the schema of those tables."
+    func = describe_tables
+)
