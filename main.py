@@ -4,7 +4,7 @@ from langchain.schema import SystemMessage
 from langchain.agents import OpenAIFunctionsAgent, AgentExecutor
 from dotenv import load_dotenv
 
-from tools.sql import run_query_tool, list_tables
+from tools.sql import run_query_tool, list_tables, describe_tables_tool
 
 #load environment variables
 load_dotenv()
@@ -12,7 +12,7 @@ load_dotenv()
 #create chat model
 chat = ChatOpenAI()
 
-#get column names of all tables
+#get all table names
 tables = list_tables()
 
 #create chat prompt template
@@ -24,8 +24,8 @@ prompt = ChatPromptTemplate(
         ]
 )
 
-
-tools = [run_query_tool]
+#list of tools
+tools = [run_query_tool, describe_tables_tool]
 
 #create agent (~ a chain that knows how to use tools)
 agent = OpenAIFunctionsAgent(
